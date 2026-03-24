@@ -3,10 +3,10 @@ from _config_pipeline import *
 ####### Customers Data Ingestion ########
 
 @dlt.table(
-   name="landing_customers_incremental",
+   name="bank_landing_customers_incremental",
    comment="Landing table for raw customers data ingested incrementally via Auto Loader"
 )
-def landing_customers_incremental():
+def bank_landing_customers_incremental():
    # Chemins spécifiques à l'entité 'customers', définis localement
    # pour éviter tout écrasement par les variables du bloc suivant
    data_name = "customers"
@@ -44,10 +44,10 @@ def landing_customers_incremental():
 ########### Account & Transactions Data Ingestion #######
 
 @dlt.table(
-   name="landing_accounts_transactions_incremental",
+   name="bank_landing_accounts_transactions_incremental",
    comment="Landing table for raw accounts and transactions data ingested incrementally via Auto Loader"
 )
-def landing_accounts_transactions_incremental():
+def bank_landing_accounts_transactions_incremental():
    # Chemins spécifiques à l'entité 'accounts', définis localement
    # pour éviter tout conflit avec les variables du bloc customers
    data_name = "accounts"

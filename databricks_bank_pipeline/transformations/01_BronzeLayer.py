@@ -1,5 +1,5 @@
 from _config_pipeline import *
-
+from utilities.utils import * 
 ########## Customers ##########
 
 # ─── Règles de validation DLT ───────────────────────────────────────────
@@ -20,31 +20,6 @@ VALID_RULES = {
     "valid_phone_number_lenght": "phone_number_length = 13"
     
 }
-
-
-def clean_df(df):
-   """Transformations de nettoyage communes aux deux tables."""
-   return (df
-       # Normalisation casse
-       .withColumn("name",              upper(col("name")))
-       .withColumn("email",             lower(col("email")))
-       .withColumn("city",              upper(col("city")))
-       .withColumn("preferred_channel", upper(col("preferred_channel")))
-       .withColumn("income_range",      upper(col("income_range")))
-       .withColumn("risk_segment",      upper(col("risk_segment")))
-       # Standardisation genre
-       .withColumn("gender", when(col("gender") == "M", "Male")
-                             .when(col("gender") == "F", "Female")
-                             .otherwise("UNKNOW"))
-       # Status vide ou NULL → UNKNOW
-       .withColumn("status", when(col("status").isNull() | (trim(col("status")) == ""), lit("UNKNOW"))
-                             .otherwise(col("status")))
-       # Nettoyage téléphone : supprime tout sauf chiffres et "+"
-       .withColumn("phone_number", regexp_replace(trim(col("phone_number")), r'[^0-9\+]', ''))
-       .withColumn("phone_number", col("phone_number").cast("string"))
-       .withColumn("phone_number_length", length(col("phone_number")))
-   )
-
 
 
 # ─── Table principale ────────────────────────────────────────────────────
@@ -68,7 +43,7 @@ def clean_df(df):
 @dlt.expect_or_drop("valid_phone_number_lenght", VALID_RULES["valid_phone_number_lenght"])
 
 def bank_bronze_customers_ingestion_cleaned():
-    return  clean_df(dlt.read_stream("bank_landing_customers_incremental"))
+    return  clean_customers_df(dlt.read_stream("bank_landing_customers_incremental"))
    
   
 # ─── Table quarantaine ───────────────────────────────────────────────────
@@ -77,17 +52,55 @@ def bank_bronze_customers_ingestion_cleaned():
    comment="Rows that failed at least one validation rule",
 )
 def bank_bronze_customers_quarantine():
-   df = clean_df(dlt.read_stream("bank_landing_customers_incremental"))
+   df = clean_customers_df(dlt.read_stream("bank_landing_customers_incremental"))
+   return quarantaine_table(df, VALID_RULES)
    
-   failed_condition = " OR ".join([f"NOT ({v})" for v in VALID_RULES.values()])
-   
-   return (df
-       .filter(expr(failed_condition))
-       .withColumn("failed_rules",
-           array_compact(array(*[
-               when(~expr(condition), lit(rule_name))
-               for rule_name, condition in VALID_RULES.items()
-           ]))
-       )
-       .withColumn("created_at", current_timestamp())
-   )
+
+
+
+################# Accounts Transactions ##########   
+
+VALID_RULES_ACCOUNTS = {
+    "valid_account_id":   "account_id IS NOT NULL",
+    "valid_customer_id":  "customer_id IS NOT NULL",
+    "valid_account_type": "account_type IS NOT NULL",
+    "valid_balance":      "balance IS NOT NULL",
+    "valid_txn_id":       "txn_id IS NOT NULL",
+    "valid_txn_date":     "txn_date IS NOT NULL",
+    "valid_txn_amount":   "txn_amount IS NOT NULL",
+    "valid_txn_channel":  "txn_channel IS NOT NULL",
+    "valid_txn_type":     "txn_type IS NOT NULL AND txn_type IN ('DEBIT', 'CREDIT')",
+    "valid_transaction":  "(txn_type = 'DEBIT' AND txn_amount < 0) OR (txn_type = 'CREDIT' AND txn_amount > 0)"
+}
+
+
+@dlt.table(
+   name="bank_bronze_accounts_transactions_ingestion_cleaned",
+   comment="Contains the cleaned data from landing data",
+)
+
+
+@dlt.expect_or_fail("valid_account_id",   VALID_RULES_ACCOUNTS["valid_account_id"])
+@dlt.expect_or_drop("valid_customer_id",  VALID_RULES_ACCOUNTS["valid_customer_id"])
+@dlt.expect_or_drop("valid_account_type", VALID_RULES_ACCOUNTS["valid_account_type"])
+@dlt.expect_or_drop("valid_balance",      VALID_RULES_ACCOUNTS["valid_balance"])
+@dlt.expect_or_drop("valid_txn_id",       VALID_RULES_ACCOUNTS["valid_txn_id"])
+@dlt.expect_or_drop("valid_txn_date",     VALID_RULES_ACCOUNTS["valid_txn_date"])
+@dlt.expect_or_drop("valid_txn_amount",   VALID_RULES_ACCOUNTS["valid_txn_amount"])
+@dlt.expect_or_drop("valid_txn_channel",  VALID_RULES_ACCOUNTS["valid_txn_channel"])
+@dlt.expect_or_drop("valid_txn_type",     VALID_RULES_ACCOUNTS["valid_txn_type"])
+@dlt.expect_or_drop("valid_transaction",  VALID_RULES_ACCOUNTS["valid_transaction"])
+
+
+def bank_bronze_accounts_transactions_ingestion_cleaned():
+    return clean_accounts_transactions_df(dlt.read_stream("bank_landing_accounts_transactions_incremental"))
+
+
+@dlt.table(
+   name="bank_bronze_accounts_transactions_quarantine",
+   comment="Rows that failed at least one validation rule",
+)
+
+def bank_bronze_accounts_transactions_quarantine():
+   df = clean_accounts_transactions_df(dlt.read_stream("bank_landing_accounts_transactions_incremental"))
+   return quarantaine_table(df, VALID_RULES_ACCOUNTS)

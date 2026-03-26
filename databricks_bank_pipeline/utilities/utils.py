@@ -13,7 +13,7 @@ def is_valid_email(email):
     return re.match(pattern, email) is not None
 
 #
-# Nettoage des données clients
+# Nettoage des données clients (to BronzeLayer)
 #
 def clean_customers_df(df):
    """Transformations de nettoyage communes aux deux tables."""
@@ -40,22 +40,9 @@ def clean_customers_df(df):
        
    )
 
-def quarantaine_table(df, VALID_RULES):
-   """Création de la table de quarantaine."""
-   failed_condition = " OR ".join([f"NOT ({v})" for v in VALID_RULES.values()])
-   
-   return (df
-       .filter(expr(failed_condition))
-       .withColumn("failed_rules",
-           array_compact(array(*[
-               when(~expr(condition), lit(rule_name))
-               for rule_name, condition in VALID_RULES.items()
-           ]))
-       )
-   )
 
 #
-# Nettoyage des données comptes et transactions
+# Nettoyage des données comptes et transactions (to BronzeLayer)
 #
 def clean_accounts_transactions_df(df):
     return(df
@@ -76,3 +63,20 @@ def clean_accounts_transactions_df(df):
     
     )
 
+
+#
+# Table de quarantaine des données incorrectes (to BronzeLayer)
+#
+def quarantaine_table(df, VALID_RULES):
+   """Création de la table de quarantaine."""
+   failed_condition = " OR ".join([f"NOT ({v})" for v in VALID_RULES.values()])
+   
+   return (df
+       .filter(expr(failed_condition))
+       .withColumn("failed_rules",
+           array_compact(array(*[
+               when(~expr(condition), lit(rule_name))
+               for rule_name, condition in VALID_RULES.items()
+           ]))
+       )
+   )

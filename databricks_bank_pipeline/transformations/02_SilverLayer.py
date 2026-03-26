@@ -41,8 +41,45 @@ def bank_silver_customers_transformed():
     )
 
 
+########
+
+
 ################################ Silver Transaction Accounts 
 
 @dlt.table(
-    name =
+    name = f"{SILVER_ZONE}.bank_silver_transaction_accounts_transformed",
+    comment = "Silver Transaction Accounts"
 )
+
+
+def bank_silver_transaction_accounts_transformed():
+    df = spark.readStream.table("bank_bronze_accounts_transactions_ingestion_cleaned")
+    return(
+        df
+        # filtre digital ou physique
+        .withColumn("channel_type",
+                        when(
+                            (col("txn_channel") == "ATM") | (col("txn_channel") == "BRANCH"),
+                            lit("PHYSICAL") 
+                        ).otherwise("DIGITAL")
+                    )
+        # txn année, mois, jour
+        .withColumn("txn_year", year(col("txn_date")))
+        .withColumn("txn_month", month(col("txn_date")))
+        .withColumn("txn_day", dayofmonth(col("txn_date")))
+        # direction transaction
+        .withColumn("txn_direction",
+                        when(
+                            col("txn_type") == 'DEBIT',
+                            lit("OUT")
+                        ).otherwise("IN")
+                    )
+        # date de transformation
+        .withColumn("transformation_date", current_timestamp())
+    )
+
+
+
+
+
+    

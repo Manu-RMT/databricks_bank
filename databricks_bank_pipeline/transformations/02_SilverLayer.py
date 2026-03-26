@@ -54,7 +54,7 @@ dlt.create_auto_cdc_flow(
     source = f"{SILVER_ZONE}.bank_silver_customers_transformed",
     keys = ["customer_id"],
     sequence_by = col("transformation_date"),
-    except_column_list=["transformation_date"],
+    except_column_list=["transformation_date","inserted_at"],
     stored_as_scd_type = 1
 )
 
@@ -105,7 +105,7 @@ dlt.create_auto_cdc_flow(
     source = f"{SILVER_ZONE}.bank_silver_transaction_accounts_transformed",
     keys = ["txn_id"],
     sequence_by = col("transformation_date"),
-    except_column_list=["transformation_date"],
+    except_column_list=["transformation_date","inserted_at"],
     stored_as_scd_type = 2
 )
 

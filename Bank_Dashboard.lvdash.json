@@ -1,0 +1,1034 @@
+{
+  "datasets": [
+    {
+      "name": "736f3d7b",
+      "displayName": "bank_gold_cust_acc_trns_agg",
+      "queryLines": [
+        "SELECT * FROM workspace.03_gold.bank_gold_cust_acc_trns_agg"
+      ]
+    },
+    {
+      "name": "9aed0a24",
+      "displayName": "bank_gold_cust_acc_trns_mv",
+      "queryLines": [
+        "SELECT * FROM workspace.03_gold.bank_gold_cust_acc_trns_mv"
+      ],
+      "catalog": "workspace",
+      "schema": "03_gold"
+    }
+  ],
+  "pages": [
+    {
+      "name": "9a1d199f",
+      "displayName": "First_page",
+      "layout": [
+        {
+          "widget": {
+            "name": "customers-by-gender",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "gender",
+                      "expression": "`gender`"
+                    },
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Customers by Gender"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "gender",
+                  "axis": {
+                    "hideLabels": false,
+                    "hideTitle": true
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "axis": {
+                    "title": "Customer"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "credit1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "yearly(last_txn_date)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `last_txn_date`)"
+                    },
+                    {
+                      "name": "total_credit",
+                      "expression": "`total_credit`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": false,
+                "title": "Crédit"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "yearly(last_txn_date)",
+                  "axis": {
+                    "title": "Date",
+                    "hideTitle": true
+                  },
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_credit",
+                  "axis": {
+                    "title": "Credit"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total-credit",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "sum(total_credit)",
+                      "expression": "SUM(`total_credit`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Crédit"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_credit)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "bac4b779",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "sum(total_debit)",
+                      "expression": "SUM(`total_debit`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Debit"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_debit)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "debit",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "yearly(last_txn_date)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `last_txn_date`)"
+                    },
+                    {
+                      "name": "total_debit",
+                      "expression": "`total_debit`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": false,
+                "title": "Débit"
+              },
+              "mark": {
+                "colors": [
+                  "#982D43",
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "yearly(last_txn_date)",
+                  "axis": {
+                    "title": "Date",
+                    "hideTitle": true
+                  },
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_debit",
+                  "axis": {
+                    "title": "Debit",
+                    "hideGrid": true,
+                    "hideLabels": false
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative",
+                    "reverse": false
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 4,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "8d0d4721",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "avg(customer_age)",
+                      "expression": "AVG(`customer_age`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "AVG Age"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(customer_age)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "22c3fa04",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "count(status)",
+                      "expression": "COUNT(`status`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`status` IN ('INACTIVE')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Inactive Customers"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count(status)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "e37cf50e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Customers"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "countdistinct(customer_id)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "0795645f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`status` IN ('ACTIVE', 'UNKNOW')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Active Customers"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "countdistinct(customer_id)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "66036605",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    },
+                    {
+                      "name": "countdistinct(customer_id)",
+                      "expression": "COUNT(DISTINCT `customer_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Customers by Risk Segment",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "risk_segment",
+                  "axis": {
+                    "hideTitle": true
+                  },
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "countdistinct(customer_id)",
+                  "displayName": "Customer Count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_segment",
+                  "displayName": "Risk Segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "859c5c56",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "name",
+                      "expression": "`name`"
+                    },
+                    {
+                      "name": "gender",
+                      "expression": "`gender`"
+                    },
+                    {
+                      "name": "city",
+                      "expression": "`city`"
+                    },
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "income_range",
+                      "expression": "`income_range`"
+                    },
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "rowsPerPage": 25,
+              "displayRowNumbers": false,
+              "frame": {
+                "title": "Customers Detail",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "name"
+                  },
+                  {
+                    "fieldName": "gender"
+                  },
+                  {
+                    "fieldName": "city"
+                  },
+                  {
+                    "fieldName": "status"
+                  },
+                  {
+                    "fieldName": "income_range"
+                  },
+                  {
+                    "fieldName": "risk_segment"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 4
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "69de9d28",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "43e89f53",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_gender",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "gender",
+                      "expression": "`gender`"
+                    },
+                    {
+                      "name": "gender_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gender",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_gender"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "118ad382",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_name",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "name",
+                      "expression": "`name`"
+                    },
+                    {
+                      "name": "name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "name",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1463bec8",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_status",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "status_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "status",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_status"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "4e239849",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_risk_segment",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "risk_segment",
+                      "expression": "`risk_segment`"
+                    },
+                    {
+                      "name": "risk_segment_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "risk_segment",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_risk_segment"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b63842d2",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_income_range",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "income_range",
+                      "expression": "`income_range`"
+                    },
+                    {
+                      "name": "income_range_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "income_range",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_income_range"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "bba69937",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_city",
+                "query": {
+                  "datasetName": "736f3d7b",
+                  "fields": [
+                    {
+                      "name": "city",
+                      "expression": "`city`"
+                    },
+                    {
+                      "name": "city_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "city",
+                    "queryName": "dashboards/01f129c0e4d41fc9a5302a67352dcbf1/datasets/01f129c11c3b1e87a8da1fbcaca8d0c3_city"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

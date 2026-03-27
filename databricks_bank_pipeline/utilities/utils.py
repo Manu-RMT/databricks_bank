@@ -25,9 +25,11 @@ def clean_customers_df(df):
        .withColumn("preferred_channel", upper(col("preferred_channel")))
        .withColumn("income_range",      upper(col("income_range")))
        .withColumn("risk_segment",      upper(col("risk_segment")))
+       .withColumn("status",            upper(col("status")))
+      
        # Standardisation genre
-       .withColumn("gender", when(col("gender") == "M", "Male")
-                             .when(col("gender") == "F", "Female")
+       .withColumn("gender", when(col("gender") == "M", "MALE")
+                             .when(col("gender") == "F", "FEMALE")
                              .otherwise("UNKNOW"))
        # Status vide ou NULL → UNKNOW
        .withColumn("status", when(col("status").isNull() | (trim(col("status")) == ""), lit("UNKNOW"))
